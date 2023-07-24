@@ -1,68 +1,93 @@
-#include "main.h"
+#include <stdarg.h>
 #include <unistd.h>
+#include "main.h"
+#include <stdlib.h>
 
-int _putchar(char c)
-{
-    return write(1, &c, 1);
-}
+/**
+ * _printf - prints any chars or strings given
+ * @format: input string
+ * Description: prints input string, unless special characters are found,
+ * in which case, it prints string or char arguments
+ * Return: total number of characters printed
+ */
 
 int _printf(const char *format, ...)
 {
-    va_list args;
-    int printed_chars = 0;
-    char *str_arg;
-    char char_arg;
+	va_list ap;
 
-    va_start(args, format);
+	int i, x, sum = 0;
+	char *string, c;
 
-    while (*format)
-    {
-        if (*format != '%')
-        {
-            _putchar(*format);
-            printed_chars++;
-        }
-        else
-        {
-            format++;
+	c = 0;
+	string = 0;
 
-            switch (*format)
-            {
-            case 'c':
-                char_arg = va_arg(args, int);
-                _putchar(char_arg);
-                printed_chars++;
-                break;
+	va_start(ap, format);
 
-            case 's':
-                str_arg = va_arg(args, char *);
-                if (str_arg == NULL)
-                    str_arg = "(null)";
+	if (format == NULL)
+	{
+		va_end(ap);
+		return (-1);
+	}
 
-                while (*str_arg)
-                {
-                    _putchar(*str_arg);
-                    printed_chars++;
-                    str_arg++;
-                }
-                break;
+	for (i = 0; format[i] != '\0'; i++)
+	{
+		if (format[i] != '%')
+		{
+			write(1, &format[i], sizeof(char));
+			sum++;
+		}
+		else
+		{
+			switch (format[i + 1])
+			{
+			case '%':
+				write(1, "%", sizeof(char));
+				i++;
+				sum++;
+				break;
+			case 'c':
+				c = va_arg(ap, int);
+				sum += _ch(c);
+				i++;
+				break;
+			case 's':
+				string = va_arg(ap, char *);
+				if (string == NULL)
+				{
+					string = "(null)";
+				}
+				sum += _str(string);
+				i++;
+				break;
+			case 'i':
+			case 'd':
+				x = va_arg(ap, int);
+				sum += _num(x);
+				i++;
+				break;
+			case ' ':
+				return (-1);
+			case '\0':
+				if ((i - 1) > 0)
+				{
+					write(1, "%", sizeof(char));
+					i++;
+					sum++;
+				}
+				else
+				{
+					va_end(ap);
+					return (-1);
+				}
+			default:
+				write(1, "%", sizeof(char));
+				sum++;
+				break;
+			}
+		}
+	}
 
-            case '%':
-                _putchar('%');
-                printed_chars++;
-                break;
+	va_end(ap);
 
-            default:
-                _putchar('%');
-                _putchar(*format);
-                printed_chars += 2;
-                break;
-            }
-        }
-        format++;
-    }
-
-    va_end(args);
-
-    return printed_chars;
+	return (sum);
 }
