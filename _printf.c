@@ -1,69 +1,34 @@
 #include "main.h"
-#include <unistd.h>
 
-int _putchar(char c)
-{
-    return write(1, &c, 1);
-}
+/**
+ * _printf - implementation of the inbuilt printf
+ * @format: the format specifier
+ * Return: the formated string
+ */
 
 int _printf(const char *format, ...)
 {
-    va_list args;
-    int printed_chars = 0;
-    char *str_arg;
-    char char_arg;
+	int printed = 0;
 
-    va_start(args, format);
+	va_list args;
 
-    while (*format)
-    {
-        if (*format != '%')
-        {
-            _putchar(*format);
-            printed_chars++;
-        }
-        else
-        {
-            format++;
+	va_start(args, format);
 
-            switch (*format)
-            {
-            case 'c':
-                char_arg = va_arg(args, int);
-                _putchar(char_arg);
-                printed_chars++;
-                break;
-
-            case 's':
-                str_arg = va_arg(args, char *);
-                if (str_arg == NULL)
-                    str_arg = "(null)";
-
-                while (*str_arg)
-                {
-                    _putchar(*str_arg);
-                    printed_chars++;
-                    str_arg++;
-                }
-                break;
-
-            case '%':
-                _putchar('%');
-                printed_chars++;
-                break;
-
-            default:
-                _putchar('%');
-                _putchar(*format);
-                printed_chars += 2;
-                break;
-            }
-        }
-        format++;
-    }
-
-    va_end(args);
-
-    return printed_chars;
+	while (*format != '\0')
+	{
+		if (*format == '%')
+		{
+			format++;
+			printed = selector(format, args, printed);
+			format++;
+		}
+		else
+		{
+			_putchar(*format);
+			printed++;
+			format++;
+		}
+	}
+	va_end(args);
+	return (printed);
 }
-
