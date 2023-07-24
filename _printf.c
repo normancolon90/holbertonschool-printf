@@ -1,93 +1,110 @@
-#include <stdarg.h>
-#include <unistd.h>
 #include "main.h"
-#include <stdlib.h>
+void print_buffer(char buffer[], int *buff_ind);
+/**
+ * _printf - Printf function
+ * @format: format.
+ * Return: Printed chars.
+ */
+int _printf(const char *format, ...)
+
+{
+
+int i, printed = 0, printed_chars = 0;
+
+int flags, width, precision, size, buff_ind = 0;
+
+va_list list;
+
+char buffer[BUFF_SIZE];
+
+if (format == NULL)
+
+return (-1);
+
+va_start(list, format);
+
+for (i = 0; format && format[i] != '\0'; i++)
+
+{
+
+if (format[i] != '%')
+
+{
+
+buffer[buff_ind++] = format[i];
+
+if (buff_ind == BUFF_SIZE)
+
+print_buffer(buffer, &buff_ind);
+
+/* write(1, &format[i], 1);*/
+
+printed_chars++;
+
+}
+
+else
+
+{
+
+print_buffer(buffer, &buff_ind);
+
+flags = get_flags(format, &i);
+
+width = get_width(format, &i, list);
+
+precision = get_precision(format, &i, list);
+
+size = get_size(format, &i);
+
+++i;
+
+printed = handle_print(format, &i, list, buffer,
+
+flags, width, precision, size);
+
+if (printed == -1)
+
+return (-1);
+
+printed_chars += printed;
+
+}
+
+}
+
+
+
+print_buffer(buffer, &buff_ind);
+
+
+
+va_end(list);
+
+
+
+return (printed_chars);
+
+}
+
+
 
 /**
- * _printf - prints any chars or strings given
- * @format: input string
- * Description: prints input string, unless special characters are found,
- * in which case, it prints string or char arguments
- * Return: total number of characters printed
+ * print_buffer - Prints the contents of the buffer if it exist
+ * @buffer: Array of chars
+ * @buff_ind: Index at which to add next char, represents the length.
  */
 
-int _printf(const char *format, ...)
+void print_buffer(char buffer[], int *buff_ind)
+
 {
-	va_list ap;
 
-	int i, x, sum = 0;
-	char *string, c;
+if (*buff_ind > 0)
 
-	c = 0;
-	string = 0;
+write(1, &buffer[0], *buff_ind);
 
-	va_start(ap, format);
 
-	if (format == NULL)
-	{
-		va_end(ap);
-		return (-1);
-	}
 
-	for (i = 0; format[i] != '\0'; i++)
-	{
-		if (format[i] != '%')
-		{
-			write(1, &format[i], sizeof(char));
-			sum++;
-		}
-		else
-		{
-			switch (format[i + 1])
-			{
-			case '%':
-				write(1, "%", sizeof(char));
-				i++;
-				sum++;
-				break;
-			case 'c':
-				c = va_arg(ap, int);
-				sum += _ch(c);
-				i++;
-				break;
-			case 's':
-				string = va_arg(ap, char *);
-				if (string == NULL)
-				{
-					string = "(null)";
-				}
-				sum += _str(string);
-				i++;
-				break;
-			case 'i':
-			case 'd':
-				x = va_arg(ap, int);
-				sum += _num(x);
-				i++;
-				break;
-			case ' ':
-				return (-1);
-			case '\0':
-				if ((i - 1) > 0)
-				{
-					write(1, "%", sizeof(char));
-					i++;
-					sum++;
-				}
-				else
-				{
-					va_end(ap);
-					return (-1);
-				}
-			default:
-				write(1, "%", sizeof(char));
-				sum++;
-				break;
-			}
-		}
-	}
+*buff_ind = 0;
 
-	va_end(ap);
-
-	return (sum);
 }
