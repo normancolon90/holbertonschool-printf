@@ -1,4 +1,11 @@
-rintf(3)               Library Functions Manual               printf(3)
+.TH _printf  "July 2023" "Linux" "Man Page-user manual"
+.SH NAME
+_printf - A simplified implementation of the _printf function.printf(3)               Library Functions Manual               printf(3)
+
+.SH COMPILE
+gcc -Wall -Werror -Wextra -pedantic -std=gnu89 -Wno-format *.c
+# Reference of man page https://man7.org/linux/man-pages/man3/printf.3.html
+
 NAME         top
        printf, fprintf, dprintf, sprintf, snprintf, vprintf, vfprintf,
        vdprintf, vsprintf, vsnprintf - formatted output conversion
