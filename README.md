@@ -31,7 +31,9 @@ The project consists of three main functions:
 
 3. `Percent handler`: This function compares the current pattern (specifier) with a list of possible specifiers and returns the corresponding function responsible for handling that specific specifier.
 
-![Flowchart](https://i.imgur.com/a/gFJlGRw)
+
+
+![enter image description here](https://i.imgur.com/a/gFJlGRw)
 
 ## Contributors
 
