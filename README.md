@@ -33,7 +33,7 @@ The project consists of three main functions:
 
 
 
-![Flowchart](https://imgur.com/a/gFJlGRw)
+![Flowchart](https://i.imgur.com/a/gFJlGRw.png)
 
 ## Contributors
 
