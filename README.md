@@ -31,7 +31,7 @@ The project consists of three main functions:
 
 3. `Percent handler`: This function compares the current pattern (specifier) with a list of possible specifiers and returns the corresponding function responsible for handling that specific specifier.
 
-![Flowchart](https://imgur.com/a/gFJlGRw)
+![Flowchart](https://i.imgur.com/a/gFJlGRw)
 
 ## Contributors
 
@@ -46,4 +46,5 @@ GitHub Profiles:
 
 Repository Link: [holbertonschool-printf](https://github.com/normancolon90/holbertonschool-printf/)
 
-This implementation of `printf` aims to replicate the behavior of the standard `printf` function in the C library and provide support for the listed specifiers.
+This implementation of `printf` aims to replicate the behavior of the standard `printf` function in the C library and provide support for the listed specifiersnd 
+ion of `printf` aims to replicate the behavior of the standard `printf` function in the C library and provide support for the listed specifiers.
